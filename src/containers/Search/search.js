@@ -9,6 +9,24 @@ const searchStyle = {
 };
 
 export default class Search extends Component {
+
+  state = {
+    destination: null,
+    wikiData: null
+  }
+
+  destinationState = (response) => {
+      this.setState({ destination: response }, function() {
+          this.props.destinationState(this.state.destination);
+        });
+    }
+  
+  searchResults = (response) => {
+    this.setState({ wikiData: response }, function() {
+        this.props.searchResults(this.state.wikiData);
+      });
+  }
+
   render() {
     return (
       <div>
@@ -17,7 +35,7 @@ export default class Search extends Component {
         </div>
         <div style={searchStyle}>
           <SearchPanel />
-          <SearchBar />
+          <SearchBar destinationFromChild={this.destinationState} searchResults={this.searchResults} />
         </div>
       </div>
     );
