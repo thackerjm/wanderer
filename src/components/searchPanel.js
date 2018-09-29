@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { Panel } from 'react-bootstrap';
-import ReactPlayer from 'react-player'
 
 class SearchPanel extends Component {
     render() {
