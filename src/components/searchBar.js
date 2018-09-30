@@ -34,7 +34,11 @@ export default class SearchBar extends Component {
 
     state = {
         destination: null,
-        wikiData: null
+        wikiData: "Sorry! No Results Found",
+        wikiSegmentOne: null,
+        wikiSegmentTwo: null,
+        wikiSegmentThree: null,
+        wikiSegmentFour: null
     };
 
     searchResults = (event) => {
@@ -46,8 +50,29 @@ export default class SearchBar extends Component {
         fetch(urlNew)
         .then(response => response.json())
         .then(data => data = data.query.pages).then(data => data = data[Object.keys(data)[0]].extract)
-        .then(data => this.setState({ wikiData: data }))
-        this.props.searchResults(this.state.wikiData);
+        .then(data => this.setState({ wikiData: data }, function() {
+            if(this.state.wikiData === undefined){
+                this.setState({
+                    wikiData: "Sorry! No Results Found"
+                }, function() {
+                    this.props.searchResults(this.state.wikiData)
+                })
+            } else{
+            var wikiSentences = this.state.wikiData.split(". ")
+            var segmentOneLength = wikiSentences.length/4
+            var segmentTwoLength = segmentOneLength*2
+            var segmentThreeLength = segmentOneLength*3
+            var segmentFourLength = segmentOneLength*4
+            var wikiSegmentOne = wikiSentences.slice(0,segmentOneLength)
+            var wikiSegmentTwo = wikiSentences.slice(segmentOneLength,segmentTwoLength)
+            var wikiSegmentThree = wikiSentences.slice(segmentTwoLength, segmentThreeLength)
+            var wikiSegmentFour = wikiSentences.slice(segmentThreeLength, segmentFourLength)
+            this.setState({
+                wikiData: [wikiSegmentOne, wikiSegmentTwo, wikiSegmentThree, wikiSegmentFour]
+            }, function() {
+                this.props.searchResults(this.state.wikiData)
+            })
+        }}))
         }
 
     destinationDataEntered = (event) => {
@@ -56,6 +81,7 @@ export default class SearchBar extends Component {
         });
         
     }
+
 
      render() {
         return (
