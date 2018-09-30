@@ -61,27 +61,66 @@ closeSearch = (event) => {
         this.props.searchStatus(this.state.search);
     });
 }
+
+determineResultDisplay() {
+    if(this.props.searchResults === "Sorry! No Results Found") {
+        return (
+            <div style={ResultsPanelStyles}>
+                <Tabs
+                    activeKey={this.state.key}
+                    onSelect={this.handleSelect}
+                    style={PanelHeader}
+                >
+                    <Tab eventKey={1} title={this.props.destination} style={PanelContent}>
+                        <div>{this.props.searchResults}</div>
+                    </Tab>
+                    <Tab eventKey={2} title="Preparing to Go" style={PanelContent}>
+                        Coming Soon!
+                    </Tab>
+                    <Tab eventKey={3} title="Our Recommendations" style={PanelContent}>
+                        Coming Soon!
+                    </Tab>
+                    <Tab eventKey={4} title="Back to Search" style={PanelContentEscape}>
+                        Coming Soon!
+                    </Tab>
+                </Tabs>
+            </div>
+);
+    } else {
+        return (
+            <div style={ResultsPanelStyles}>
+                <Tabs
+                    activeKey={this.state.key}
+                    onSelect={this.handleSelect}
+                    style={PanelHeader}
+                >
+                    <Tab eventKey={1} title={this.props.destination} style={PanelContent}>
+                        <div>{this.props.searchResults[0]}</div>
+                        <br />
+                        <div>{this.props.searchResults[1]}</div>
+                        <br />
+                        <div>{this.props.searchResults[2]}</div>
+                        <br />
+                        <div>{this.props.searchResults[3]}</div>
+                    </Tab>
+                    <Tab eventKey={2} title="Preparing to Go" style={PanelContent}>
+                        Coming Soon!
+                    </Tab>
+                    <Tab eventKey={3} title="Our Recommendations" style={PanelContent}>
+                        Coming Soon!
+                    </Tab>
+                    <Tab eventKey={4} title="Back to Search" style={PanelContentEscape}>
+                        Coming Soon!
+                    </Tab>
+                </Tabs>
+            </div>
+);
+    }
+}
     render() {
         return (
-                    <div style={ResultsPanelStyles}>
-                        <Tabs
-                            activeKey={this.state.key}
-                            onSelect={this.handleSelect}
-                            style={PanelHeader}
-                        >
-                            <Tab eventKey={1} title={this.props.destination} style={PanelContent}>
-                                {this.props.searchResults}
-                            </Tab>
-                            <Tab eventKey={2} title="Preparing to Go" style={PanelContent}>
-                                Coming Soon!
-                            </Tab>
-                            <Tab eventKey={3} title="Our Recommendations" style={PanelContent}>
-                                Coming Soon!
-                            </Tab>
-                            <Tab eventKey={4} title="Back to Search" style={PanelContentEscape}>
-                                Coming Soon!
-                            </Tab>
-                        </Tabs>
+                    <div>
+                        {this.determineResultDisplay()}
                     </div>
         );
     }
